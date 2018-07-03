@@ -121,10 +121,22 @@ resource "azurerm_template_deployment" "Template-LambdaSpark" {
         "description": "Address space of subnet for headNode"
       }
     }
-    "hdistorageaccount":{
+    "hdistorageaccountname":{
       "type":"string"
       "metadata": {
-        "description":"Target Storage Account"
+        "description":"Target Storage Account Name"
+      }
+    }
+    "hdistoragecontainer":{
+      "type":"string"
+      "metadata": {
+        "description":"Target Storage Container Name"
+      }
+    }
+    "hdistoragekey":{
+      "type":"string"
+      "metadata": {
+        "description":"Target Storage account key"
       }
     }
     "clusVersion":{
@@ -152,7 +164,7 @@ resource "azurerm_template_deployment" "Template-LambdaSpark" {
          "location":"[parameters('location')]",
          "apiVersion":"2015-03-01-preview",
          "dependsOn":[
-            "[parameters('hdistorageaccount')]"
+            "[parameters('hdistorageaccountname')]"
            
             
          ],
@@ -172,10 +184,10 @@ resource "azurerm_template_deployment" "Template-LambdaSpark" {
             "storageProfile":{
                "storageaccounts":[
                   {
-                     "name":"[replace(replace(concat(reference(concat('Microsoft.Storage/storageAccounts/', variables('defaultStorageAccount').name), '2016-01-01').primaryEndpoints.blob),'https:',''),'/','')]",
+                     "name":"[parameters(hdistorageaccountname)]",
                      "isDefault":true,
-                     "container":"[parameters('clusterName')]",
-                     "key":"[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('defaultStorageAccount').name), '2016-01-01').keys[0].value]"
+                     "container":"[parameters('hdistoragecontainer')]",
+                     "key":"[parameters('hdistoragekey')]"
                   }
                ]
             },
@@ -241,25 +253,27 @@ resource "azurerm_template_deployment" "Template-LambdaSpark" {
 DEPLOY
 
   parameters {
-    "resourceGroupName"                = ""
-    "location"                         = ""
-    "clusterName"                      = ""
-    "clusterLoginUserName"             = ""
-    "clusterLoginPassword"             = ""
-    "sshUserName"                      = ""
-    "sshPassword"                      = ""
-    "existingVNETName"                 = ""
-    "existingVNETId"                   = ""
-    "headNodeSubnetName"               = ""
-    "headNodeSubnetId"                 = ""
-    "headNodeSubnetAddressPrefix"      = ""
-    "workerNodeSubnetName"             = ""
-    "workerNodeSubnetId"               = ""
-    "workerNodeSubnetAddressPrefix"    = ""
-    "zooKeeperNodeSubnetName"          = ""
-    "zooKeeperNodeSubnetId"            = ""
-    "zooKeeperNodeSubnetAddressPrefix" = ""
-    "hdistorageaccount"                = ""
+    "resourceGroupName"                = "${module.ResourceGroup.Name}"
+    "location"                         = "${var.AzureRegion}"
+    "clusterName"                      = "HDICluster"
+    "clusterLoginUserName"             = "HDIAdmin"
+    "clusterLoginPassword"             = "Devoteam75!"
+    "sshUserName"                      = "HDISSHUSer"
+    "sshPassword"                      = "Devoteam75!"
+    "existingVNETName"                 = "${module.vNetName.Name}"
+    "existingVNETId"                   = "${module.vNetName.Id}"
+    "headNodeSubnetName"               = "${module.BE_Subnet.Name}"
+    "headNodeSubnetId"                 = "${module.BE_Subnet.Id}"
+    "headNodeSubnetAddressPrefix"      = "${module.BE_Subnet.AddressPrefix}"
+    "workerNodeSubnetName"             = "${module.BE_Subnet.Name}"
+    "workerNodeSubnetId"               = "${module.BE_Subnet.Id}"
+    "workerNodeSubnetAddressPrefix"    = "${module.BE_Subnet.AddressPrefix}"
+    "zooKeeperNodeSubnetName"          = "${module.BE_Subnet.Name}"
+    "zooKeeperNodeSubnetId"            = "${module.BE_Subnet.Id}"
+    "zooKeeperNodeSubnetAddressPrefix" = "${module.BE_Subnet.AddressPrefix}"
+    "hdistorageaccountname"            = "${module.HDIStorageAccount.Name}"
+    "hdistoragecontainer"              = "${module.HDIStorageContainer.Name}"
+    "hdistoragekey"                    = "${Module.HDIStorageAccount.PrimaryAccessKey}"
   }
 
   deployment_mode = "Incremental"
