@@ -10,7 +10,7 @@
 # Configure the Microsoft Azure Provider with Azure provider variable defined in AzureDFProvider.tf
 
 provider "azurerm" {
-  subscription_id = "${var.AzureSubscriptionID1}"
+  subscription_id = "${var.AzureSubscriptionID3}"
   client_id       = "${var.AzureClientID}"
   client_secret   = "${var.AzureClientSecret}"
   tenant_id       = "${var.AzureTenantID}"
@@ -24,8 +24,7 @@ provider "azurerm" {
 
 module "ResourceGroup" {
   #Module Location
-  #source = "./Modules/01 ResourceGroup"
-  source = "github.com/dfrappart/Terra-AZBasiclinuxWithModules//Modules//01 ResourceGroup/"
+  source = "./Modules/01 ResourceGroup"
 
   #Module variable
   RGName              = "${var.RGName}-${var.EnvironmentUsageTag}${var.EnvironmentTag}"
@@ -38,8 +37,7 @@ module "ResourceGroup" {
 
 module "SampleArchi_vNet" {
   #Module location
-  #source = "./Modules/02 vNet"
-  source = "github.com/dfrappart/Terra-AZBasiclinuxWithModules//Modules//02 vNet/"
+  source = "./Modules/02 VNet"
 
   #Module variable
   vNetName            = "${var.vNetName}${var.EnvironmentUsageTag}${var.EnvironmentTag}"
@@ -54,8 +52,7 @@ module "SampleArchi_vNet" {
 
 module "DiagStorageAccount" {
   #Module location
-  #source = "./Modules/03 StorageAccountGP"
-  source = "github.com/dfrappart/Terra-AZBasiclinuxWithModules//Modules//03 StorageAccountGP/"
+  source = "./Modules/03 StorageAccountGP"
 
   #Module variable
   StorageAccountName     = "${var.EnvironmentTag}log"
@@ -69,8 +66,7 @@ module "DiagStorageAccount" {
 
 module "LogStorageContainer" {
   #Module location
-  #source = "./Modules/04 StorageAccountContainer"
-  source = "github.com/dfrappart/Terra-AZBasiclinuxWithModules//Modules//04 StorageAccountContainer/"
+  source = "./Modules/04 StorageAccountContainer"
 
   #Module variable
   StorageContainerName = "logs"
@@ -83,8 +79,7 @@ module "LogStorageContainer" {
 
 module "HDIStorageAccount" {
   #Module location
-  #source = "./Modules/03 StorageAccountGP"
-  source = "github.com/dfrappart/Terra-AZBasiclinuxWithModules//Modules//03 StorageAccountGP/"
+  source = "./Modules/03 StorageAccountGP"
 
   #Module variable
   StorageAccountName     = "${var.EnvironmentTag}hdi"
@@ -98,8 +93,7 @@ module "HDIStorageAccount" {
 
 module "HDIStorageContainer" {
   #Module location
-  #source = "./Modules/04 StorageAccountContainer"
-  source = "github.com/dfrappart/Terra-AZBasiclinuxWithModules//Modules//04 StorageAccountContainer/"
+  source = "./Modules/04 StorageAccountContainer"
 
   #Module variable
   StorageContainerName = "hdi"
@@ -112,8 +106,7 @@ module "HDIStorageContainer" {
 
 module "FilesExchangeStorageAccount" {
   #Module location
-  #source = "./Modules/03 StorageAccountGP"
-  source = "github.com/dfrappart/Terra-AZBasiclinuxWithModules//Modules//03 StorageAccountGP/"
+  source = "./Modules/03 StorageAccountGP"
 
   #Module variable
   StorageAccountName     = "${var.EnvironmentTag}file"
@@ -129,8 +122,7 @@ module "FilesExchangeStorageAccount" {
 
 module "InfraFileShare" {
   #Module location
-  #source = "./Modules/05 StorageAccountShare"
-  source = "github.com/dfrappart/Terra-AZBasiclinuxWithModules//Modules//05 StorageAccountShare"
+  source = "./Modules/05 StorageAccountShare"
 
   #Module variable
   ShareName          = "infrafileshare"

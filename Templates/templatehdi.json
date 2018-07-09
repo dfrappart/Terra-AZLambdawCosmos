@@ -1,276 +1,222 @@
 {
-   "$schema":"https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-   "contentVersion": "1.0.0.0",
+  "$schema":"https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
    "parameters":{
-      "resourceGroupName":{
+     "location":{
+       "type":"string",
+       "metadata":{
+         "description":"The location of the resources aka the location of the resource group"
+       }
+     },
+     "clusterName":{
         "type":"string",
         "metadata":{
-          "description":"The Name of the target Resource Group"
+           "description":"The name of the HDInsight cluster to create."
         }
-      },
-      "location":{
+     },
+     "clusterLoginUserName":{
         "type":"string",
+        "defaultValue":"admin",
         "metadata":{
-          "description":"The location of the resources aka the location of the resource group"
+           "description":"These credentials can be used to submit jobs to the cluster and to log into cluster dashboards."
         }
-      },
-      "clusterName":{
-         "type":"string",
-         "metadata":{
-            "description":"The name of the HDInsight cluster to create."
-         }
-      },
-      "clusterLoginUserName":{
-         "type":"string",
-         "defaultValue":"admin",
-         "metadata":{
-            "description":"These credentials can be used to submit jobs to the cluster and to log into cluster dashboards."
-         }
-      },
-      "clusterLoginPassword":{
-         "type":"securestring",
-         "metadata":{
-            "description":"The password must be at least 10 characters in length and must contain at least one digit, one non-alphanumeric character, and one upper or lower case letter."
-         }
-      },
-      "sshUserName":{
-         "type":"string",
-         "defaultValue":"sshuser",
-         "metadata":{
-            "description":"These credentials can be used to remotely access the cluster."
-         }
-      },
-      "sshPassword":{
-         "type":"securestring",
-         "metadata":{
-            "description":"The password must be at least 10 characters in length and must contain at least one digit, one non-alphanumeric character, and one upper or lower case letter."
-         }
-      },
-    "existingVNETName": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of the target VNET "
-      }
-    },
-    "headNodeNumber": {
-      "type": "string",
-      "default": "2",
-      "metadata": {
-        "description": "Number of Head Nodes"
-      }
-    },
-    "workerNodeNumber": {
-      "type": "string",
-      "default": "3",
-      "metadata": {
-        "description": "Number of Worker Nodes"
-      }
-    },    
-    "zooKeeperNodeNumber": {
-      "type": "string",
-      "default": "3",
-      "metadata": {
-        "description": "Number of ZooKeeper Nodes"
-      }
-    },
-    "headNodeVMSize": {
-      "type": "string",
-      "default": "Standard_D2_v3"
-    },
-    "workerNodeVMSize": {
-      "type": "string",
-      "default": "Standard_D2_v3"
-    },
-    "zooKeeperNodeVMSize": {
-      "type": "string",
-      "default": "Standard_D2_v3"
-    },
-    "existingVNETId": {
-      "type": "string",
-      "metadata": {
-        "description": "Id of the target VNET"
-      }
-    },
-    "zooKeeperNodeSubnet": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of the subnet for zooKeeper"
-      }
-    },
-    "zooKeeperSubnetId": {
-      "type": "string",
-      "metadata": {
-        "description": "Id of the subnet for zooKeeper"
-      }
-    },
-    "zooKeeperSubnetIdAddressPrefix": {
-      "type": "string",
-      "metadata": {
-        "description": "Address space of subnet for zooKeeper"
-      }
-    },
-    "workerNodeSubnet": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of the subnet for workerNode"
-      }
-    },
-    "workerNodeSubnetId": {
-      "type": "string",
-      "metadata": {
-        "description": "Id of the subnet for workerNode"
-      }
-    },
-    "workerNodeSubnetIdAddressPrefix": {
-      "type": "string",
-      "metadata": {
-        "description": "Address space of subnet for workerNode"
-      }
-    },
-    "headNodeSubnet": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of the subnet for headNode"
-      }
-    },
-    "headNodeSubnetId": {
-      "type": "string",
-      "metadata": {
-        "description": "Id of the subnet for headNode"
-      }
-    },
-    "headNodeSubnetIdAddressPrefix": {
-      "type": "string",
-      "metadata": {
-        "description": "Address space of subnet for headNode"
-      }
-    },
-    "hdistorageaccountname":{
-      "type":"string",
-      "metadata": {
-        "description":"Target Storage Account Name"
-      }
-    },
-    "hdistoragecontainer":{
-      "type":"string",
-      "metadata": {
-        "description":"Target Storage Container Name"
-      }
-    },
-    "hdistoragekey":{
-      "type":"string",
-      "metadata": {
-        "description":"Target Storage account key"
-      }
-    },
-    "clusVersion":{
-      "type":"string",
-      "defaultValue":"3.6",
-      "metadata":{
-        "description":"The HDI Cluster Version"
-      }
-    },
-    "hDIKind":{
-      "type":"string",
-      "defaultValue":"spark",
-      "metadata":{
-        "description":"The HDI Cluster Kind, can be Spark, HBase..."
-      }
-    }
+     },
+     "clusterLoginPassword":{
+        "type":"securestring",
+        "metadata":{
+           "description":"The password must be at least 10 characters in length and must contain at least one digit, one non-alphanumeric character, and one upper or lower case letter."
+        }
+     },
+     "sshUserName":{
+        "type":"string",
+        "defaultValue":"sshuser",
+        "metadata":{
+           "description":"These credentials can be used to remotely access the cluster."
+        }
+     },
+     "sshPassword":{
+        "type":"securestring",
+        "metadata":{
+           "description":"The password must be at least 10 characters in length and must contain at least one digit, one non-alphanumeric character, and one upper or lower case letter."
+        }
+     },
+     "headNodeNumber": {
+       "type": "string",
+       "defaultValue": "2",
+       "metadata": {
+       "description": "Number of Head Nodes"
+       }
+     },
+     "workerNodeNumber": {
+       "type": "string",
+       "defaultValue": "1",
+       "metadata": {
+       "description": "Number of Worker Nodes"
+       }
+     },    
+     "zooKeeperNodeNumber": {
+       "type": "string",
+       "defaultValue": "3",
+       "metadata": {
+         "description": "Number of ZooKeeper Nodes"
+       }
+     },
+     "headNodeVMSize": {
+       "type": "string",
+       "defaultValue": "Standard_D3_v2"
+     },
+     "workerNodeVMSize": {
+       "type": "string",
+       "defaultValue": "Standard_D3_v2"
+     },
+     "zooKeeperNodeVMSize": {
+       "type": "string",
+       "defaultValue": "Standard_D3_v2"
+     },
+     "existingVNETId": {
+       "type": "string",
+       "metadata": {
+         "description": "Id of the target VNET"
+       }
+     },
+     "zooKeeperNodeSubnet": {
+       "type": "string",
+       "metadata": {
+         "description": "Name of the subnet for zooKeeper"
+       }
+     },
+     "workerNodeSubnet": {
+       "type": "string",
+       "metadata": {
+         "description": "Name of the subnet for workerNode"
+       }
+     },
+     "headNodeSubnet": {
+       "type": "string",
+       "metadata": {
+         "description": "Name of the subnet for headNode"
+       }
+     },
+     "hdistorageaccountname":{
+       "type":"string",
+       "metadata": {
+         "description":"Target Storage Account Name"
+       }
+     },
+     "hdistoragecontainer":{
+       "type":"string",
+       "metadata": {
+         "description":"Target Storage Container Name"
+       }
+     },
+     "hdistoragekey":{
+       "type":"string",
+       "metadata": {
+         "description":"Target Storage account key"
+       }
+     },
+     "clusVersion":{
+       "type":"string",
+       "defaultValue":"3.6",
+       "metadata":{
+         "description":"The HDI Cluster Version"
+       }
+     },
+     "hDIKind":{
+       "type":"string",
+       "defaultValue":"spark",
+       "metadata":{
+         "description":"The HDI Cluster Kind, can be Spark, HBase..."
+       }
+     }
    },
-   "variables":{
-   },
-   "resources":[
-
-      {
-         "type":"Microsoft.HDInsight/clusters",
-         "name":"[parameters('clusterName')]",
-         "location":"[parameters('location')]",
-         "apiVersion":"2015-03-01-preview",
-         "dependsOn":[
-            "[parameters('hdistorageaccountname')]"
-           
-            
-         ],
-         "properties":{
-            "clusterVersion":"[parameters('clusVersion')]",
-            "osType":"Linux",
-            "clusterDefinition":{
-               "kind":"[parameters('hDIKind')]",
-               "configurations":{
-                  "gateway":{
-                     "restAuthCredential.isEnabled":true,
-                     "restAuthCredential.username":"[parameters('clusterLoginUserName')]",
-                     "restAuthCredential.password":"[parameters('clusterLoginPassword')]"
-                  }
-               }
-            },
-            "storageProfile":{
-               "storageaccounts":[
-                  {
-                     "name":"[parameters('hdistorageaccountname')]",
-                     "isDefault":true,
-                     "container":"[parameters('hdistoragecontainer')]",
-                     "key":"[parameters('hdistoragekey')]"
-                  }
-               ]
-            },
-            "computeProfile":{
-               "roles":[
-                  {
-                     "name":"headnode",
-                     "targetInstanceCount":"[parameters('headNodeNumber')]",
-                     "hardwareProfile":{
-                        "vmSize":"[parameters('headNodeVMSize')]"
-                     },
-                     "osProfile":{
-                        "linuxOperatingSystemProfile":{
-                           "username":"[parameters('sshUserName')]",
-                           "password":"[parameters('sshPassword')]"
-                        }
-                     },
-                     "virtualNetworkProfile": {
-                          "id": "[parameters('existingVNetId')]",
-                          "subnet": "[parameters('headNodeSubnet')]"
-                        }
-                  },
-                  {
-                     "name":"workernode",
-                     "targetInstanceCount":"[parameters('workerNodeNumber')]",
-                     "hardwareProfile":{
-                        "vmSize":"[parameters('workerNodeVMSize')]"
-                     },
-                     "osProfile":{
-                        "linuxOperatingSystemProfile":{
-                           "username":"[parameters('sshUserName')]",
-                           "password":"[parameters('sshPassword')]"
-                        }
-                     },
-                     "virtualNetworkProfile": {
-                          "id": "[parameters('existingVNetId')]",
-                          "subnet": "[parameters('workerNodeSubnet')]"
-                        }
-                  },
-                  {
-                    "name": "zookeepernode",
-                    "targetInstanceCount": "[parameters('zooKeeperNodeNumber')]",
-                    "hardwareProfile": {
-                        "vmSize": "[parameters('zooKeeperNodeVMSize')]"
+  "variables":{
+  },
+  "resources":[
+     {
+        "type":"Microsoft.HDInsight/clusters",
+        "name":"[parameters('clusterName')]",
+        "location":"[parameters('location')]",
+        "apiVersion":"2015-03-01-preview",
+        "properties":{
+           "clusterVersion":"[parameters('clusVersion')]",
+           "osType":"Linux",
+           "clusterDefinition":{
+              "kind":"[parameters('hDIKind')]",
+              "configurations":{
+                 "gateway":{
+                    "restAuthCredential.isEnabled":true,
+                    "restAuthCredential.username":"[parameters('clusterLoginUserName')]",
+                    "restAuthCredential.password":"[parameters('clusterLoginPassword')]"
+                 }
+              }
+           },
+           "storageProfile":{
+              "storageaccounts":[
+                 {
+                    "name":"[parameters('hdistorageaccountname')]",
+                    "isDefault":true,
+                    "container":"[parameters('hdistoragecontainer')]",
+                    "key":"[parameters('hdistoragekey')]"
+                 }
+              ]
+           },
+           "computeProfile":{
+              "roles":[
+                 {
+                    "name":"headnode",
+                    "targetInstanceCount":"[parameters('headNodeNumber')]",
+                    "hardwareProfile":{
+                       "vmSize":"[parameters('headNodeVMSize')]"
                     },
-                    "osProfile": {
-                        "linuxOperatingSystemProfile": {
-                            "username":"[parameters('sshUserName')]",
-                            "password":"[parameters('sshPassword')]"
-                        }
+                    "osProfile":{
+                       "linuxOperatingSystemProfile":{
+                          "username":"[parameters('sshUserName')]",
+                          "password":"[parameters('sshPassword')]"
+                       }
                     },
                     "virtualNetworkProfile": {
-                        "id": "[parameters('existingVNETId')]",
-                        "subnet": "[parameters('zooKeeperNodeSubnet')]"
-                    }
-                    }
-               ]
-            }
-         }
-      }
-   ]
+                         "id": "[parameters('existingVNetId')]",
+                         "subnet": "[parameters('headNodeSubnet')]"
+                       }
+                 },
+                 {
+                    "name":"workernode",
+                    "targetInstanceCount":"[parameters('workerNodeNumber')]",
+                    "hardwareProfile":{
+                       "vmSize":"[parameters('workerNodeVMSize')]"
+                    },
+                    "osProfile":{
+                       "linuxOperatingSystemProfile":{
+                          "username":"[parameters('sshUserName')]",
+                          "password":"[parameters('sshPassword')]"
+                       }
+                    },
+                    "virtualNetworkProfile": {
+                         "id": "[parameters('existingVNetId')]",
+                         "subnet": "[parameters('workerNodeSubnet')]"
+                       }
+                 },
+                 {
+                   "name": "zookeepernode",
+                   "targetInstanceCount": "[parameters('zooKeeperNodeNumber')]",
+                   "hardwareProfile": {
+                       "vmSize": "[parameters('zooKeeperNodeVMSize')]"
+                   },
+                   "osProfile": {
+                       "linuxOperatingSystemProfile": {
+                           "username":"[parameters('sshUserName')]",
+                           "password":"[parameters('sshPassword')]"
+                       }
+                   },
+                   "virtualNetworkProfile": {
+                       "id": "[parameters('existingVNETId')]",
+                       "subnet": "[parameters('zooKeeperNodeSubnet')]"
+                   }
+                   }
+              ]
+           }
+        }
+     }
+  ]
 }

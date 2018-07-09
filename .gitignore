@@ -14,3 +14,4 @@ terraform.tfstate.backup
 Modules/
 Source/
 Output.tfold
+*.tfold
