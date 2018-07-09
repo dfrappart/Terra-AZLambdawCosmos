@@ -79,10 +79,9 @@ module "LogStorageContainer" {
   AccessType           = "private"
 }
 
-
 #Creating Storage Account for HDI
 
-module "DiagStorageAccount" {
+module "HDIStorageAccount" {
   #Module location
   #source = "./Modules/03 StorageAccountGP"
   source = "github.com/dfrappart/Terra-AZBasiclinuxWithModules//Modules//03 StorageAccountGP/"
@@ -140,6 +139,7 @@ module "InfraFileShare" {
   Quota              = "0"
 }
 
+/*
 module "Keyvault" {
   #Module location
 

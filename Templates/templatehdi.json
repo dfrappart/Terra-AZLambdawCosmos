@@ -1,15 +1,13 @@
-######################################################################
-# Creation HDInsight Spark
-######################################################################
-
-resource "azurerm_template_deployment" "Template-LambdaSpark" {
-  name                = "terraclustersparktemplate"
-  resource_group_name = "${module.ResourceGroup.Name}"
-
-  template_body = <<DEPLOY
 {
    "$schema":"https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
    "contentVersion": "1.0.0.0",
+   "parameters":{
+      "resourceGroupName":{
+        "type":"string",
+        "metadata":{
+          "description":"The Name of the target Resource Group"
+        }
+      },
       "location":{
         "type":"string",
         "metadata":{
@@ -48,38 +46,44 @@ resource "azurerm_template_deployment" "Template-LambdaSpark" {
             "description":"The password must be at least 10 characters in length and must contain at least one digit, one non-alphanumeric character, and one upper or lower case letter."
          }
       },
+    "existingVNETName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the target VNET "
+      }
+    },
     "headNodeNumber": {
       "type": "string",
-      "defaultValue": "3",
+      "default": "2",
       "metadata": {
         "description": "Number of Head Nodes"
       }
     },
     "workerNodeNumber": {
       "type": "string",
-      "defaultValue": "3",
+      "default": "3",
       "metadata": {
         "description": "Number of Worker Nodes"
       }
     },    
     "zooKeeperNodeNumber": {
       "type": "string",
-      "defaultValue": "3",
+      "default": "3",
       "metadata": {
         "description": "Number of ZooKeeper Nodes"
       }
     },
     "headNodeVMSize": {
       "type": "string",
-      "defaultValue": "Standard_D2_v3"
+      "default": "Standard_D2_v3"
     },
     "workerNodeVMSize": {
       "type": "string",
-      "defaultValue": "Standard_D2_v3"
+      "default": "Standard_D2_v3"
     },
     "zooKeeperNodeVMSize": {
       "type": "string",
-      "defaultValue": "Standard_D2_v3"
+      "default": "Standard_D2_v3"
     },
     "existingVNETId": {
       "type": "string",
@@ -93,16 +97,52 @@ resource "azurerm_template_deployment" "Template-LambdaSpark" {
         "description": "Name of the subnet for zooKeeper"
       }
     },
+    "zooKeeperSubnetId": {
+      "type": "string",
+      "metadata": {
+        "description": "Id of the subnet for zooKeeper"
+      }
+    },
+    "zooKeeperSubnetIdAddressPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Address space of subnet for zooKeeper"
+      }
+    },
     "workerNodeSubnet": {
       "type": "string",
       "metadata": {
         "description": "Name of the subnet for workerNode"
       }
     },
+    "workerNodeSubnetId": {
+      "type": "string",
+      "metadata": {
+        "description": "Id of the subnet for workerNode"
+      }
+    },
+    "workerNodeSubnetIdAddressPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Address space of subnet for workerNode"
+      }
+    },
     "headNodeSubnet": {
       "type": "string",
       "metadata": {
         "description": "Name of the subnet for headNode"
+      }
+    },
+    "headNodeSubnetId": {
+      "type": "string",
+      "metadata": {
+        "description": "Id of the subnet for headNode"
+      }
+    },
+    "headNodeSubnetIdAddressPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Address space of subnet for headNode"
       }
     },
     "hdistorageaccountname":{
@@ -147,6 +187,11 @@ resource "azurerm_template_deployment" "Template-LambdaSpark" {
          "name":"[parameters('clusterName')]",
          "location":"[parameters('location')]",
          "apiVersion":"2015-03-01-preview",
+         "dependsOn":[
+            "[parameters('hdistorageaccountname')]"
+           
+            
+         ],
          "properties":{
             "clusterVersion":"[parameters('clusVersion')]",
             "osType":"Linux",
@@ -228,41 +273,4 @@ resource "azurerm_template_deployment" "Template-LambdaSpark" {
          }
       }
    ]
-}
-DEPLOY
-
-  parameters {
-    "resourceGroupName"    = "${module.ResourceGroup.Name}"
-    "location"             = "${var.AzureRegion}"
-    "clusterName"          = "HDICluster"
-    "clusterLoginUserName" = "HDIAdmin"
-    "clusterLoginPassword" = "Devoteam752018!"
-    "sshUserName"          = "HDISSHUSer"
-    "sshPassword"          = "Devoteam752018!"
-    "existingVNETName"     = "${module.SampleArchi_vNet.Name}"
-    "existingVNETId"       = "${module.SampleArchi_vNet.Id}"
-    "headNodeSubnet"       = "${module.BE_Subnet.Name}"
-
-    #"headNodeSubnetId"     = "${module.BE_Subnet.Id}"
-
-    #"headNodeSubnetAddressPrefix"      = "${module.BE_Subnet.AddressPrefix}"
-    "workerNodeSubnet" = "${module.BE_Subnet.Name}"
-
-    #"workerNodeSubnetId" = "${module.BE_Subnet.Id}"
-
-    #"workerNodeSubnetAddressPrefix"    = "${module.BE_Subnet.AddressPrefix}"
-    "zooKeeperNodeSubnet" = "${module.BE_Subnet.Name}"
-
-    #"zooKeeperNodeSubnetId" = "${module.BE_Subnet.Id}"
-
-    #"zooKeeperNodeSubnetAddressPrefix" = "${module.BE_Subnet.AddressPrefix}"
-    "hdistorageaccountname" = "${module.HDIStorageAccount.Id}"
-    "hdistoragecontainer"   = "${module.HDIStorageContainer.Id}"
-    "hdistoragekey"         = "${module.HDIStorageAccount.PrimaryAccessKey}"
-    "zooKeeperNodeVMSize"   = "${lookup(var.VMSize,6)}"
-    "headNodeVMSize"        = "${lookup(var.VMSize,6)}"
-    "workerNodeVMSize"      = "${lookup(var.VMSize,6)}"
-  }
-
-  deployment_mode = "Incremental"
 }
