@@ -25,8 +25,6 @@ data "template_file" "customscripttemplate" {
   template = "${file("./Templates/templatehdi.json")}"
 }
 
-/*
-
 resource "azurerm_template_deployment" "Template-LambdaSpark" {
   name                = "terraclustersparktemplate"
   resource_group_name = "${module.NetworkWatcherAgentForBastion.RGName}"
@@ -35,17 +33,17 @@ resource "azurerm_template_deployment" "Template-LambdaSpark" {
 
   parameters {
     "location"              = "${var.AzureRegion}"
-    "clusterName"           = "HDICluster"
-    "clusterLoginUserName"  = "HDIAdmin"
-    "clusterLoginPassword"  = "Devoteam752018!"
-    "sshUserName"           = "HDISSHUSer"
-    "sshPassword"           = "Devoteam752018!"
+    "clusterName"           = "HDICluster${var.EnvironmentTag}${var.EnvironmentUsageTag}"
+    "clusterLoginUserName"  = "hdiadmin"
+    "clusterLoginPassword"  = "${var.VMAdminPassword}"
+    "sshUserName"           = "hdisshuser"
+    "sshPassword"           = "${var.VMAdminPassword}"
     "existingVNETId"        = "${module.SampleArchi_vNet.Id}"
-    "headNodeSubnet"        = "${module.BE_Subnet.Name}"
-    "workerNodeSubnet"      = "${module.BE_Subnet.Name}"
-    "zooKeeperNodeSubnet"   = "${module.BE_Subnet.Name}"
-    "hdistorageaccountname" = "${module.HDIStorageAccount.Id}"
-    "hdistoragecontainer"   = "${module.HDIStorageContainer.Id}"
+    "headNodeSubnet"        = "${module.BE_Subnet.Id}"
+    "workerNodeSubnet"      = "${module.BE_Subnet.Id}"
+    "zooKeeperNodeSubnet"   = "${module.BE_Subnet.Id}"
+    "hdistorageaccountname" = "${module.HDIStorageAccount.Name}"
+    "hdistoragecontainer"   = "${module.HDIStorageContainer.Name}"
     "hdistoragekey"         = "${module.HDIStorageAccount.PrimaryAccessKey}"
     "zooKeeperNodeVMSize"   = "${lookup(var.VMSize,1)}"
     "headNodeVMSize"        = "${lookup(var.VMSize,1)}"
@@ -54,4 +52,3 @@ resource "azurerm_template_deployment" "Template-LambdaSpark" {
 
   deployment_mode = "Incremental"
 }
-*/

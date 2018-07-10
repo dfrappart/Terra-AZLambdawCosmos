@@ -98,6 +98,10 @@ output "HDIStorageAccountSecondaryAccessKey" {
   value = "${module.HDIStorageAccount.SecondaryAccessKey}"
 }
 
+output "HDIStorageAccountConnectionURI" {
+  value = "${module.HDIStorageAccount.ConnectionURI}"
+}
+
 ######################################################
 # Files Storage account Info
 

@@ -183,7 +183,7 @@
            "storageProfile":{
               "storageaccounts":[
                  {
-                    "name":"[parameters('hdistorageaccountname')]",
+                    "name":"[concat(parameters('hdistorageaccountname'),'.blob.core.windows.net')]",
                     "isDefault":true,
                     "container":"[parameters('hdistoragecontainer')]",
                     "key":"[parameters('hdistoragekey')]"
