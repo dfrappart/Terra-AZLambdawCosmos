@@ -1,6 +1,6 @@
 {
-  "$schema":"https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-  "contentVersion": "1.0.0.0",
+  "$schema":"https://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+  "contentVersion": "0.9.0.0",
    "parameters":{
      "location":{
        "type":"string",
@@ -128,10 +128,36 @@
        "metadata":{
          "description":"The HDI Cluster Kind, can be Spark, HBase..."
        }
-     }
-   },
-  "variables":{
-  },
+     },
+     "sparkVersion": {
+       "type": "string",
+       "defaultValue": "2.3",
+       "metadata": {
+         "description": "The Spark version"
+       }
+     },
+     "headNodeMinNumber": {
+       "type": "string",
+       "defaultValue": "1",
+       "metadata": {
+         "description": "The minimum head node number"
+       }
+      },
+      "workerNodeMinNumber": {
+        "type": "string",
+        "defaultValue": "1",
+        "metadata": {
+          "description": "The minimum worker node number"
+        }
+       },
+       "zooKeeperNodeMinNumber": {
+        "type": "string",
+        "defaultValue": "1",
+        "metadata": {
+          "description": "The minimum zookeeper node number"
+        }
+       }    
+     },
   "resources":[
      {
         "type":"Microsoft.HDInsight/clusters",
@@ -143,6 +169,9 @@
            "osType":"Linux",
            "clusterDefinition":{
               "kind":"[parameters('hDIKind')]",
+              "componentVersion": {
+                "Spark": "[parameters('sparkVersion')]"
+              },
               "configurations":{
                  "gateway":{
                     "restAuthCredential.isEnabled":true,
@@ -165,6 +194,7 @@
               "roles":[
                  {
                     "name":"headnode",
+                    "minInstanceCount": "[parameters('headNodeMinNumber')]",
                     "targetInstanceCount":"[parameters('headNodeNumber')]",
                     "hardwareProfile":{
                        "vmSize":"[parameters('headNodeVMSize')]"
@@ -178,10 +208,12 @@
                     "virtualNetworkProfile": {
                          "id": "[parameters('existingVNetId')]",
                          "subnet": "[parameters('headNodeSubnet')]"
-                       }
+                       },
+                    "scriptActions": []
                  },
                  {
                     "name":"workernode",
+                    "minInstanceCount":"[parameters('workerNodeMinNumber')]",
                     "targetInstanceCount":"[parameters('workerNodeNumber')]",
                     "hardwareProfile":{
                        "vmSize":"[parameters('workerNodeVMSize')]"
@@ -195,10 +227,12 @@
                     "virtualNetworkProfile": {
                          "id": "[parameters('existingVNetId')]",
                          "subnet": "[parameters('workerNodeSubnet')]"
-                       }
+                       },
+                    "scriptActions": []
                  },
                  {
                    "name": "zookeepernode",
+                   "minInstanceCount": "[parameters('zookeeperNodeMinNumber')]",
                    "targetInstanceCount": "[parameters('zooKeeperNodeNumber')]",
                    "hardwareProfile": {
                        "vmSize": "[parameters('zooKeeperNodeVMSize')]"

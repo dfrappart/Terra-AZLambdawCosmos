@@ -6,12 +6,12 @@
 
 module "AllowHDInsightHealthIn" {
   #Module source
-  source = "./Modules/05 NSGRule"
+  source = "./Modules/09 NSGRule"
 
   #Module variable
-  RGName                            = ""
-  NSGReference                      = ""
-  NSGRuleName                       = ""
+  RGName                            = "${module.ResourceGroup.Name}"
+  NSGReference                      = "${module.NSG_BE_Subnet.Name}"
+  NSGRuleName                       = "AllowHDInsightHealthIn"
   NSGRulePriority                   = 101
   NSGRuleDirection                  = "Inbound"
   NSGRuleAccess                     = "Allow"
@@ -25,14 +25,15 @@ data "template_file" "customscripttemplate" {
   template = "${file("./Templates/templatehdi.json")}"
 }
 
+/*
+
 resource "azurerm_template_deployment" "Template-LambdaSpark" {
   name                = "terraclustersparktemplate"
-  resource_group_name = "${module.ResourceGroup.Name}"
+  resource_group_name = "${module.NetworkWatcherAgentForBastion.RGName}"
 
   template_body = "${data.template_file.customscripttemplate.rendered}"
 
   parameters {
-    #"resourceGroupName"    = "${module.ResourceGroup.Name}"
     "location"              = "${var.AzureRegion}"
     "clusterName"           = "HDICluster"
     "clusterLoginUserName"  = "HDIAdmin"
@@ -53,3 +54,4 @@ resource "azurerm_template_deployment" "Template-LambdaSpark" {
 
   deployment_mode = "Incremental"
 }
+*/
