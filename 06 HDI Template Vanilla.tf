@@ -25,7 +25,6 @@ data "template_file" "customscripttemplate" {
   template = "${file("./Templates/templatehdi.json")}"
 }
 
-/*
 resource "azurerm_template_deployment" "Template-LambdaSpark" {
   name                = "terraclustersparktemplate"
   resource_group_name = "${module.NetworkWatcherAgentForBastion.RGName}"
@@ -53,6 +52,3 @@ resource "azurerm_template_deployment" "Template-LambdaSpark" {
 
   deployment_mode = "Incremental"
 }
-
-*/
-

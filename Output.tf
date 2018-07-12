@@ -200,3 +200,46 @@ output "BastionPrivateIP" {
 output "BastionNICId" {
   value = ["${module.NICs_Bastion.Ids}"]
 }
+
+######################################################
+#CosmosDB Output
+
+output "LambdaCosmosDBId" {
+  value = "${module.LambdaCosmosDB.Id}"
+}
+
+output "LambdaCosmosDBEP" {
+  value = "${module.LambdaCosmosDB.EP}"
+}
+
+output "LambdaCosmosDBREP" {
+  value = "${module.LambdaCosmosDB.REP}"
+}
+
+output "LambdaCosmosDBWEP" {
+  value = "${module.LambdaCosmosDB.WEP}"
+}
+
+output "LambdaCosmosDBPMK" {
+  value     = "${module.LambdaCosmosDB.PMK}"
+  sensitive = true
+}
+
+output "LambdaCosmosDBSMK" {
+  value     = "${module.LambdaCosmosDB.SMK}"
+  sensitive = true
+}
+
+output "LambdaCosmosDBPRMK" {
+  value     = "${module.LambdaCosmosDB.PRMK}"
+  sensitive = true
+}
+
+output "LambdaCosmosDBSRMK" {
+  value     = "${module.LambdaCosmosDB.SRMK}"
+  sensitive = true
+}
+
+output "LambdaCosmosDBCSTR" {
+  value = "${module.LambdaCosmosDB.CSTR}"
+}
