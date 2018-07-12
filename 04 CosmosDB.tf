@@ -17,5 +17,5 @@ module "LambdaCosmosDB" {
   #Module variables
   CosmosDBName     = "${random_string.CosmosDBPrefix.result}lambdacosmos"
   CosmosDBLocation = "${var.AzureRegion}"
-  CosmosDBRG       = "${module.ResourceGroup.Name}"
+  CosmosDBRG       = "${module.ResourceGroupInfra.Name}"
 }

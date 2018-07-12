@@ -19,7 +19,7 @@ module "NSG_Bastion_Subnet" {
 
   #Module variable
   NSGName             = "NSG_${lookup(var.SubnetName, 2)}"
-  RGName              = "${module.ResourceGroup.Name}"
+  RGName              = "${module.ResourceGroupInfra.Name}"
   NSGLocation         = "${var.AzureRegion}"
   EnvironmentTag      = "${var.EnvironmentTag}"
   EnvironmentUsageTag = "${var.EnvironmentUsageTag}"
@@ -33,7 +33,7 @@ module "Bastion_Subnet" {
 
   #Module variable
   SubnetName          = "${lookup(var.SubnetName, 2)}"
-  RGName              = "${module.ResourceGroup.Name}"
+  RGName              = "${module.ResourceGroupInfra.Name}"
   vNetName            = "${module.SampleArchi_vNet.Name}"
   Subnetaddressprefix = "${lookup(var.SubnetAddressRange, 2)}"
   NSGid               = "${module.NSG_Bastion_Subnet.Id}"
@@ -53,7 +53,7 @@ module "NSG_FE_Subnet" {
 
   #Module variable
   NSGName             = "NSG_${lookup(var.SubnetName, 0)}"
-  RGName              = "${module.ResourceGroup.Name}"
+  RGName              = "${module.ResourceGroupInfra.Name}"
   NSGLocation         = "${var.AzureRegion}"
   EnvironmentTag      = "${var.EnvironmentTag}"
   EnvironmentUsageTag = "${var.EnvironmentUsageTag}"
@@ -67,7 +67,7 @@ module "FE_Subnet" {
 
   #Module variable
   SubnetName          = "${lookup(var.SubnetName, 0)}"
-  RGName              = "${module.ResourceGroup.Name}"
+  RGName              = "${module.ResourceGroupInfra.Name}"
   vNetName            = "${module.SampleArchi_vNet.Name}"
   Subnetaddressprefix = "${lookup(var.SubnetAddressRange, 0)}"
   NSGid               = "${module.NSG_FE_Subnet.Id}"
@@ -87,7 +87,7 @@ module "NSG_BE_Subnet" {
 
   #Module variable
   NSGName             = "NSG_${lookup(var.SubnetName, 1)}"
-  RGName              = "${module.ResourceGroup.Name}"
+  RGName              = "${module.ResourceGroupInfra.Name}"
   NSGLocation         = "${var.AzureRegion}"
   EnvironmentTag      = "${var.EnvironmentTag}"
   EnvironmentUsageTag = "${var.EnvironmentUsageTag}"
@@ -101,7 +101,7 @@ module "BE_Subnet" {
 
   #Module variable
   SubnetName          = "${lookup(var.SubnetName, 1)}"
-  RGName              = "${module.ResourceGroup.Name}"
+  RGName              = "${module.ResourceGroupInfra.Name}"
   vNetName            = "${module.SampleArchi_vNet.Name}"
   Subnetaddressprefix = "${lookup(var.SubnetAddressRange, 1)}"
   NSGid               = "${module.NSG_BE_Subnet.Id}"

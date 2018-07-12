@@ -22,12 +22,23 @@ provider "azurerm" {
 
 # Creating the ResourceGroup
 
-module "ResourceGroup" {
+module "ResourceGroupInfra" {
   #Module Location
   source = "./Modules/01 ResourceGroup"
 
   #Module variable
-  RGName              = "${var.RGName}-${var.EnvironmentUsageTag}${var.EnvironmentTag}"
+  RGName              = "${var.RGName}-${var.EnvironmentUsageTag}${var.EnvironmentTag}-Infra"
+  RGLocation          = "${var.AzureRegion}"
+  EnvironmentTag      = "${var.EnvironmentTag}"
+  EnvironmentUsageTag = "${var.EnvironmentUsageTag}"
+}
+
+module "ResourceGroupHDI" {
+  #Module Location
+  source = "./Modules/01 ResourceGroup"
+
+  #Module variable
+  RGName              = "${var.RGName}-${var.EnvironmentUsageTag}${var.EnvironmentTag}-HDI"
   RGLocation          = "${var.AzureRegion}"
   EnvironmentTag      = "${var.EnvironmentTag}"
   EnvironmentUsageTag = "${var.EnvironmentUsageTag}"
@@ -41,7 +52,7 @@ module "SampleArchi_vNet" {
 
   #Module variable
   vNetName            = "${var.vNetName}${var.EnvironmentUsageTag}${var.EnvironmentTag}"
-  RGName              = "${module.ResourceGroup.Name}"
+  RGName              = "${module.ResourceGroupInfra.Name}"
   vNetLocation        = "${var.AzureRegion}"
   vNetAddressSpace    = "${var.vNetIPRange}"
   EnvironmentTag      = "${var.EnvironmentTag}"
@@ -56,7 +67,7 @@ module "DiagStorageAccount" {
 
   #Module variable
   StorageAccountName     = "${var.EnvironmentTag}log"
-  RGName                 = "${module.ResourceGroup.Name}"
+  RGName                 = "${module.ResourceGroupInfra.Name}"
   StorageAccountLocation = "${var.AzureRegion}"
   StorageAccountTier     = "${lookup(var.storageaccounttier, 0)}"
   StorageReplicationType = "${lookup(var.storagereplicationtype, 0)}"
@@ -70,7 +81,7 @@ module "LogStorageContainer" {
 
   #Module variable
   StorageContainerName = "logs"
-  RGName               = "${module.ResourceGroup.Name}"
+  RGName               = "${module.ResourceGroupInfra.Name}"
   StorageAccountName   = "${module.DiagStorageAccount.Name}"
   AccessType           = "private"
 }
@@ -83,7 +94,7 @@ module "HDIStorageAccount" {
 
   #Module variable
   StorageAccountName     = "${var.EnvironmentTag}hdi"
-  RGName                 = "${module.ResourceGroup.Name}"
+  RGName                 = "${module.ResourceGroupInfra.Name}"
   StorageAccountLocation = "${var.AzureRegion}"
   StorageAccountTier     = "${lookup(var.storageaccounttier, 0)}"
   StorageReplicationType = "${lookup(var.storagereplicationtype, 0)}"
@@ -97,7 +108,7 @@ module "HDIStorageContainer" {
 
   #Module variable
   StorageContainerName = "hdi"
-  RGName               = "${module.ResourceGroup.Name}"
+  RGName               = "${module.ResourceGroupInfra.Name}"
   StorageAccountName   = "${module.DiagStorageAccount.Name}"
   AccessType           = "private"
 }
@@ -110,7 +121,7 @@ module "FilesExchangeStorageAccount" {
 
   #Module variable
   StorageAccountName     = "${var.EnvironmentTag}file"
-  RGName                 = "${module.ResourceGroup.Name}"
+  RGName                 = "${module.ResourceGroupInfra.Name}"
   StorageAccountLocation = "${var.AzureRegion}"
   StorageAccountTier     = "${lookup(var.storageaccounttier, 0)}"
   StorageReplicationType = "${lookup(var.storagereplicationtype, 0)}"
@@ -126,7 +137,7 @@ module "InfraFileShare" {
 
   #Module variable
   ShareName          = "infrafileshare"
-  RGName             = "${module.ResourceGroup.Name}"
+  RGName             = "${module.ResourceGroupInfra.Name}"
   StorageAccountName = "${module.FilesExchangeStorageAccount.Name}"
   Quota              = "0"
 }

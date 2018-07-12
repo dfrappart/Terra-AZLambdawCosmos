@@ -5,12 +5,23 @@
 ######################################################
 # Resource group info Output
 
-output "ResourceGroupName" {
-  value = "${module.ResourceGroup.Name}"
+output "ResourceGroupInfraName" {
+  value = "${module.ResourceGroupInfra.Name}"
 }
 
-output "ResourceGroupId" {
-  value = "${module.ResourceGroup.Id}"
+output "ResourceGroupInfraId" {
+  value = "${module.ResourceGroupInfra.Id}"
+}
+
+######################################################
+# Resource group info Output
+
+output "ResourceGroupHDIName" {
+  value = "${module.ResourceGroupHDI.Name}"
+}
+
+output "ResourceGroupHDIId" {
+  value = "${module.ResourceGroupHDI.Id}"
 }
 
 ######################################################

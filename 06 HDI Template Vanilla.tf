@@ -9,7 +9,7 @@ module "AllowHDInsightHealthIn" {
   source = "./Modules/09 NSGRule"
 
   #Module variable
-  RGName                            = "${module.ResourceGroup.Name}"
+  RGName                            = "${module.ResourceGroupInfra.Name}"
   NSGReference                      = "${module.NSG_BE_Subnet.Name}"
   NSGRuleName                       = "AllowHDInsightHealthIn"
   NSGRulePriority                   = 101
@@ -27,7 +27,7 @@ data "template_file" "customscripttemplate" {
 
 resource "azurerm_template_deployment" "Template-LambdaSpark" {
   name                = "terraclustersparktemplate"
-  resource_group_name = "${module.NetworkWatcherAgentForBastion.RGName}"
+  resource_group_name = "${module.ResourceGroupHDI.Name}"
 
   template_body = "${data.template_file.customscripttemplate.rendered}"
 
