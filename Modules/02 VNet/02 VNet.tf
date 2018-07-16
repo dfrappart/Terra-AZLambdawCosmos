@@ -65,3 +65,7 @@ output "AddressSpace" {
 output "RGName" {
   value = "${azurerm_virtual_network.Terra-vNet.resource_group_name}"
 }
+
+output "RGLocation" {
+  value = "${azurerm_virtual_network.Terra-vNet.location}"
+}

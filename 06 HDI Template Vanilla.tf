@@ -21,15 +21,16 @@ module "AllowHDInsightHealthIn" {
   NSGRuleDestinationAddressPrefixes = ["${lookup(var.SubnetAddressRange, 1)}"]
 }
 
-data "template_file" "customscripttemplate" {
+data "template_file" "customscripttemplateHDISpark" {
   template = "${file("./Templates/templatehdi.json")}"
 }
 
+/*
 resource "azurerm_template_deployment" "Template-LambdaSpark" {
   name                = "terraclustersparktemplate"
   resource_group_name = "${module.ResourceGroupHDI.Name}"
 
-  template_body = "${data.template_file.customscripttemplate.rendered}"
+  template_body = "${data.template_file.customscripttemplateHDISpark.rendered}"
 
   parameters {
     "location"              = "${var.AzureRegion}"
@@ -52,3 +53,6 @@ resource "azurerm_template_deployment" "Template-LambdaSpark" {
 
   deployment_mode = "Incremental"
 }
+
+*/
+

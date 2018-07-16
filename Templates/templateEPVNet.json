@@ -1,0 +1,64 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "type": "String"
+        },
+        "location": {
+            "type": "String"
+        },
+        "addressPrefix": {
+            "type": "String"
+        },
+        "subnetName": {
+            "type": "String"
+        },
+        "subnetAddressPrefix": {
+            "type": "String"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[parameters('name')]",
+            "apiVersion": "2018-02-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[parameters('addressPrefix')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[parameters('subnetName')]",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnetAddressPrefix')]",
+                            "serviceEndpoints": [
+                                {
+                                    "service": "Microsoft.AzureCosmosDB"
+                                },
+                                {
+                                    "service": "Microsoft.KeyVault"
+                                },
+                                {
+                                    "service": "Microsoft.Sql"
+                                },
+                                {
+                                    "service": "Microsoft.Storage"
+                                },
+                                {
+                                    "service": "Microsoft.ServiceBus"
+                                },
+                                {
+                                    "service": "Microsoft.EventHub"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

@@ -27,7 +27,7 @@ module "AllowSSHFromInternetBastionIn" {
 }
 
 #Bastion public IP Creation
-
+/*
 module "BastionPublicIP" {
   #Module source
   source = "./Modules/10 PublicIP"
@@ -126,7 +126,7 @@ module "VMs_Bastion" {
   EnvironmentUsageTag = "${var.EnvironmentUsageTag}"
 }
 
-/*
+
 module "CustomScriptForBastion" {
   #Module Location
   #source = "./Modules/19 CustomLinuxExtension-Ansible"
@@ -142,7 +142,7 @@ module "CustomScriptForBastion" {
   EnvironmentUsageTag = "${var.EnvironmentUsageTag}"
 }
 
-*/
+
 
 module "NetworkWatcherAgentForBastion" {
   #Module Location
@@ -157,3 +157,7 @@ module "NetworkWatcherAgentForBastion" {
   EnvironmentTag      = "${var.EnvironmentTag}"
   EnvironmentUsageTag = "${var.EnvironmentUsageTag}"
 }
+
+
+*/
+
