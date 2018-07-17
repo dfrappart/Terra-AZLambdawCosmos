@@ -1,24 +1,23 @@
 ######################################################################
 # This file activate Endpoint for CosmosDB
 ######################################################################
-data "template_file" "customscripttemplateEPVNet" {
-  template = "${file("./Templates/templateEPVNet.json")}"
+
+data "template_file" "templateSubnetwEP" {
+  template = "${file("./Templates/templateEPSubnet.json")}"
 }
 
 resource "azurerm_template_deployment" "Template-VNetEndpoint" {
   name                = "terraVNettemplate"
   resource_group_name = "${module.ResourceGroupInfra.Name}"
 
-  template_body = "${data.template_file.customscripttemplateEPVNet.rendered}"
+  template_body = "${data.template_file.templateSubnetwEP.rendered}"
 
   parameters {
-    "name"                = "${module.SampleArchi_vNet.Name}"
     "location"            = "${module.SampleArchi_vNet.RGLocation}"
-    "addressPrefix"       = "${element(var.vNetIPRange,0)}"
-    "SubnetName"          = "HDI_Subnet"
-    "SubnetAddressPRefix" = "10.0.3.0/24"
-
-    #"enableDdosProtection" = "true"
+    "ExistingVNetName"    = "${module.SampleArchi_vNet.Name}"
+    "subnetName"          = "CreatedfromJSON_Subnet"
+    "subnetAddressPrefix" = "10.0.3.0/24"
+    "nSGID"               = "${module.NSG_FE_Subnet.Id}"
   }
 
   deployment_mode = "Incremental"

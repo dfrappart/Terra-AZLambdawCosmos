@@ -67,11 +67,13 @@ output "DiagStorageAccountPrimaryFileEP" {
 }
 
 output "DiagStorageAccountPrimaryAccessKey" {
-  value = "${module.DiagStorageAccount.PrimaryAccessKey}"
+  value     = "${module.DiagStorageAccount.PrimaryAccessKey}"
+  sensitive = true
 }
 
 output "DiagStorageAccountSecondaryAccessKey" {
-  value = "${module.DiagStorageAccount.SecondaryAccessKey}"
+  value     = "${module.DiagStorageAccount.SecondaryAccessKey}"
+  sensitive = true
 }
 
 ######################################################
@@ -102,11 +104,13 @@ output "HDIStorageAccountPrimaryFileEP" {
 }
 
 output "HDIStorageAccountPrimaryAccessKey" {
-  value = "${module.HDIStorageAccount.PrimaryAccessKey}"
+  value     = "${module.HDIStorageAccount.PrimaryAccessKey}"
+  sensitive = true
 }
 
 output "HDIStorageAccountSecondaryAccessKey" {
-  value = "${module.HDIStorageAccount.SecondaryAccessKey}"
+  value     = "${module.HDIStorageAccount.SecondaryAccessKey}"
+  sensitive = true
 }
 
 output "HDIStorageAccountConnectionURI" {
@@ -141,11 +145,13 @@ output "FilesExchangeStorageAccountPrimaryFileEP" {
 }
 
 output "FilesExchangeStorageAccountPrimaryAccessKey" {
-  value = "${module.FilesExchangeStorageAccount.PrimaryAccessKey}"
+  value     = "${module.FilesExchangeStorageAccount.PrimaryAccessKey}"
+  sensitive = true
 }
 
 output "FilesExchangeStorageAccountSecondaryAccessKey" {
-  value = "${module.FilesExchangeStorageAccount.SecondaryAccessKey}"
+  value     = "${module.FilesExchangeStorageAccount.SecondaryAccessKey}"
+  sensitive = true
 }
 
 ######################################################
@@ -212,6 +218,7 @@ output "BastionNICId" {
   value = ["${module.NICs_Bastion.Ids}"]
 }
 */
+/*
 ######################################################
 #CosmosDB Output
 
@@ -254,3 +261,5 @@ output "LambdaCosmosDBSRMK" {
 output "LambdaCosmosDBCSTR" {
   value = "${module.LambdaCosmosDB.CSTR}"
 }
+*/
+

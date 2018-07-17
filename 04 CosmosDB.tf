@@ -1,7 +1,7 @@
 ######################################################
 # This file deploys a CosmosDB account
 ######################################################
-
+/*
 resource "random_string" "CosmosDBPrefix" {
   length  = 5
   upper   = "false"
@@ -19,3 +19,5 @@ module "LambdaCosmosDB" {
   CosmosDBLocation = "${var.AzureRegion}"
   CosmosDBRG       = "${module.ResourceGroupInfra.Name}"
 }
+*/
+

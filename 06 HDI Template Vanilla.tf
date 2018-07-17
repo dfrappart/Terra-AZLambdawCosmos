@@ -1,9 +1,8 @@
 ######################################################################
 # Creation HDInsight Spark
 ######################################################################
-
 #NSG Rules
-
+/*
 module "AllowHDInsightHealthIn" {
   #Module source
   source = "./Modules/09 NSGRule"
