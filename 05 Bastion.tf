@@ -4,7 +4,7 @@
 ##############################################################
 #This file creates BE DB servers
 ##############################################################
-/*
+
 #NSG Rules
 
 module "AllowSSHFromInternetBastionIn" {
@@ -26,7 +26,7 @@ module "AllowSSHFromInternetBastionIn" {
 }
 
 #Bastion public IP Creation
-/*
+
 module "BastionPublicIP" {
   #Module source
   source = "./Modules/10 PublicIP"
@@ -112,7 +112,7 @@ module "VMs_Bastion" {
   ASID                = "${module.AS_Bastion.Id}"
   VMStorageTier       = "${lookup(var.Manageddiskstoragetier, 0)}"
   VMAdminName         = "${var.VMAdminName}"
-  VMAdminPassword     = "${var.VMAdminPassword}"
+  VMAdminPassword     = "${data.azurerm_key_vault_secret.VMPassword.value}"
   DataDiskId          = ["${module.DataDisks_Bastion.Ids}"]
   DataDiskName        = ["${module.DataDisks_Bastion.Names}"]
   DataDiskSize        = ["${module.DataDisks_Bastion.Sizes}"]
@@ -124,24 +124,6 @@ module "VMs_Bastion" {
   EnvironmentTag      = "${var.EnvironmentTag}"
   EnvironmentUsageTag = "${var.EnvironmentUsageTag}"
 }
-
-
-module "CustomScriptForBastion" {
-  #Module Location
-  #source = "./Modules/19 CustomLinuxExtension-Ansible"
-  source = "github.com/dfrappart/Terra-AZBasiclinuxWithModules//Modules//19 CustomLinuxExtension-Ansible"
-
-  #Module variables
-  AgentCount          = "1"
-  AgentName           = "BastionCustomScript"
-  AgentLocation       = "${var.AzureRegion}"
-  AgentRG             = "${module.ResourceGroupInfra.Name}"
-  VMName              = ["${module.VMs_Bastion.Name}"]
-  EnvironmentTag      = "${var.EnvironmentTag}"
-  EnvironmentUsageTag = "${var.EnvironmentUsageTag}"
-}
-
-
 
 module "NetworkWatcherAgentForBastion" {
   #Module Location
@@ -156,7 +138,3 @@ module "NetworkWatcherAgentForBastion" {
   EnvironmentTag      = "${var.EnvironmentTag}"
   EnvironmentUsageTag = "${var.EnvironmentUsageTag}"
 }
-
-
-*/
-

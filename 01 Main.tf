@@ -10,7 +10,7 @@
 # Configure the Microsoft Azure Provider with Azure provider variable defined in AzureDFProvider.tf
 
 provider "azurerm" {
-  subscription_id = "${var.AzureSubscriptionID3}"
+  subscription_id = "${var.AzureSubscriptionID1}"
   client_id       = "${var.AzureClientID}"
   client_secret   = "${var.AzureClientSecret}"
   tenant_id       = "${var.AzureTenantID}"
@@ -142,35 +142,22 @@ module "InfraFileShare" {
   Quota              = "0"
 }
 
-/*
-module "Keyvault" {
-  #Module location
+######################################################################
+# Data sources
+######################################################################
 
-  source = "./Modules/01 Keyvault"
-
-  #Module variables
-  KeyVaultName            = "keyvaultdftest"
-  KeyVaultRG              = "${module.ResourceGroup.Name}"
-  KeyVaultObjectIDPolicy2 = "${var.AzureObjectID}"
-  KeyVaultObjectIDPolicy1 = "${var.AzureServicePrincipalInteractive}"
-  KeyVaultTenantID        = "${var.AzureTenantID}"
-  KeyVaultApplicationID   = "${var.AzureApplicationID}"
-  EnvironmentTag          = "${var.EnvironmentTag}"
-  EnvironmentUsageTag     = "${var.EnvironmentUsageTag}"
+data "azurerm_resource_group" "KeyVaultRG" {
+  name = "RG-KeyVaultTest"
 }
 
-/*
-module "WinVMPassword" {
-  #Module location
-  source = "./Modules/02 KeyvaultSecret"
-
-  #Module variable
-  PasswordName        = "WinVMPassword"
-  PasswordValue       = "${var.VMAdminPassword}"
-  VaultURI            = "${module.Keyvault.URI}"
-  EnvironmentTag      = "${var.EnvironmentTag}"
-  EnvironmentUsageTag = "${var.EnvironmentUsageTag}"
+data "azurerm_key_vault" "Keyvault" {
+  name                = "dfkeyvaulttest01"
+  resource_group_name = "${data.azurerm_resource_group.KeyVaultRG.name}"
 }
 
-*/
+#Data source for VM Password in keyvault
 
+data "azurerm_key_vault_secret" "VMPassword" {
+  name      = "DefaultVMPassword"
+  vault_uri = "${data.azurerm_key_vault.Keyvault.vault_uri}"
+}

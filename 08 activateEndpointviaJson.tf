@@ -15,8 +15,8 @@ resource "azurerm_template_deployment" "Template-VNetEndpoint" {
   parameters {
     "location"            = "${module.SampleArchi_vNet.RGLocation}"
     "ExistingVNetName"    = "${module.SampleArchi_vNet.Name}"
-    "subnetName"          = "CreatedfromJSON_Subnet"
-    "subnetAddressPrefix" = "10.0.3.0/24"
+    "subnetName"          = "${module.HDI_Subnet.Name}"
+    "subnetAddressPrefix" = "${lookup(var.SubnetAddressRange, 3)}"
     "nSGID"               = "${module.NSG_FE_Subnet.Id}"
   }
 
